@@ -1,0 +1,6 @@
+10/13
+	6 hours
+	add Kinect support to FPS version of DJ Clone
+	Camera tweaking
+	Aim tweaking
+	Explore Kinect Code
