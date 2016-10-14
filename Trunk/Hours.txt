@@ -4,3 +4,7 @@
 	Camera tweaking
 	Aim tweaking
 	Explore Kinect Code
+	
+10/13
+	2 hours 
+	modeling hand and gun
