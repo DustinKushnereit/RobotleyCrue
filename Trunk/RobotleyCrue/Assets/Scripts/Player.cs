@@ -57,6 +57,7 @@ public class Player : MonoBehaviour
 
     public GameObject guitarTip;
     public GameObject avatarLeftHand;
+    public GameObject playerLeftArm;
 
     void Start ()
     {
@@ -100,7 +101,16 @@ public class Player : MonoBehaviour
             Invoke("ResetArm", 0.4f);
         }
 
-        //avatarLeftHand.transform.position = guitarTip.transform.position; 
+        avatarLeftHand.transform.position = guitarTip.transform.position;
+
+        //Vector3 relativePos = guitarTip.transform.position - playerLeftArm.transform.position;
+        //relativePos = new Vector3(relativePos.x, relativePos.y - 90, relativePos.z - 90);
+        //playerLeftArm.transform.rotation = Quaternion.Euler(relativePos);
+
+        Vector3 relativePos = guitarTip.transform.position - playerLeftArm.transform.position;
+        Quaternion rotation = Quaternion.LookRotation(relativePos);
+        playerLeftArm.transform.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, rotation.eulerAngles.z + 90);
+
         //avatar.transform.rotation = transform.rotation;
         //avatar.transform.position = new Vector3(gun.transform.position.x, gun.transform.position.y - 2, gun.transform.position.z);
         //avatar.transform.localRotation = gun.transform.rotation;
@@ -205,8 +215,8 @@ public class Player : MonoBehaviour
         if(gamePad.GetTriggerTap_R() && canAttack)
         {
             //Vector3 mDirection = (new Vector3(transform.localEulerAngles.x, 0, transform.localEulerAngles.y).normalized);
-            GameObject bulletInstance = Instantiate(bullet, avatarLeftHand.transform.position, avatarLeftHand.transform.rotation) as GameObject;
-            bulletInstance.GetComponent<Rigidbody>().AddForce(avatarLeftHand.transform.up * 28.0f, ForceMode.VelocityChange);
+            GameObject bulletInstance = Instantiate(bullet, new Vector3(playerLeftArm.transform.position.x, playerLeftArm.transform.position.y, playerLeftArm.transform.position.z), playerLeftArm.transform.rotation) as GameObject;
+            bulletInstance.GetComponent<Rigidbody>().AddForce(new Vector3(playerLeftArm.transform.up.x * 28, 0, playerLeftArm.transform.up.z * 28.0f), ForceMode.VelocityChange);
 
             /*Rigidbody bulletClone;
             bulletClone = Instantiate(bullet, bullet.transform.position, bullet.transform.rotation) as Rigidbody;
@@ -214,7 +224,7 @@ public class Player : MonoBehaviour
 
             music.playGunSound();
             canAttack = false;
-            Invoke("AttackEnable", 0.3f);
+            Invoke("AttackEnable", 0.1f);
         }
 
         if (gamePad.GetButton("RB") && beatsPowerSlider.value >= 10) //values is from 0-10
