@@ -103,20 +103,12 @@ public class Player : MonoBehaviour
 
         avatarLeftHand.transform.position = guitarTip.transform.position;
 
-        //Vector3 relativePos = guitarTip.transform.position - playerLeftArm.transform.position;
-        //relativePos = new Vector3(relativePos.x, relativePos.y - 90, relativePos.z - 90);
-        //playerLeftArm.transform.rotation = Quaternion.Euler(relativePos);
-
         Vector3 relativePos = guitarTip.transform.position - playerLeftArm.transform.position;
         Quaternion rotation = Quaternion.LookRotation(relativePos);
-        playerLeftArm.transform.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, rotation.eulerAngles.z + 90);
 
-        //avatar.transform.rotation = transform.rotation;
-        //avatar.transform.position = new Vector3(gun.transform.position.x, gun.transform.position.y - 2, gun.transform.position.z);
-        //avatar.transform.localRotation = gun.transform.rotation;
+        float angleZ = rotation.eulerAngles.z + (90 * -guitarTip.transform.position.y);
 
-        //if (transform.position.y <= 1.0f)
-        //transform.position = new Vector3(transform.position.x, 1.0f, transform.position.z);
+        playerLeftArm.transform.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y + 100, angleZ);
     }
 
     void FixedUpdate()

@@ -10,5 +10,5 @@
 	modeling hand and gun
 	
 10/14
-	2 hours
+	3.5 hours
 	Gun Firing correctly
