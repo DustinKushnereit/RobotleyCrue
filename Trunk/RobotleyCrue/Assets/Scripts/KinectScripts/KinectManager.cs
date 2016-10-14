@@ -11,7 +11,8 @@ using System.Text;
 public class KinectManager : MonoBehaviour
 {
 	public enum Smoothing : int { None, Default, Medium, Aggressive }
-	
+
+    public GameObject player;
 	
 	// Public Bool to determine how many players there are. Default of one user.
 	public bool TwoUsers = false;
@@ -1188,10 +1189,10 @@ public class KinectManager : MonoBehaviour
 									
 									if(HandCursor1.GetComponent<GUITexture>() == null)
 									{
-										float zDist = HandCursor1.transform.position.z - Camera.main.transform.position.z;
+										float zDist = HandCursor1.transform.position.z - player.GetComponent<Camera>().transform.position.z;
 										vCursorPos.z = zDist;
 										
-										vCursorPos = Camera.main.ViewportToWorldPoint(vCursorPos);
+										vCursorPos = player.GetComponent<Camera>().ViewportToWorldPoint(vCursorPos);
 									}
 
 									HandCursor1.transform.position = Vector3.Lerp(HandCursor1.transform.position, vCursorPos, 3 * Time.deltaTime);
@@ -1200,7 +1201,7 @@ public class KinectManager : MonoBehaviour
 								if(ControlMouseCursor)
 								{
 									Vector3 vCursorPos = HandCursor1.GetComponent<GUITexture>() != null ? HandCursor1.transform.position :
-										Camera.main.WorldToViewportPoint(HandCursor1.transform.position);
+                                        player.GetComponent<Camera>().WorldToViewportPoint(HandCursor1.transform.position);
 									MouseControl.MouseMove(vCursorPos, CalibrationText);
 								}
 							}

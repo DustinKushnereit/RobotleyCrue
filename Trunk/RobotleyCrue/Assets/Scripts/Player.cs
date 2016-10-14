@@ -55,6 +55,7 @@ public class Player : MonoBehaviour
     private float m_InvincibleFrames;
     private const float m_MAXINCIBILITY = 0.3f;
 
+    public GameObject guitarTip;
     public GameObject avatarLeftHand;
 
     void Start ()
@@ -99,12 +100,13 @@ public class Player : MonoBehaviour
             Invoke("ResetArm", 0.4f);
         }
 
+        //avatarLeftHand.transform.position = guitarTip.transform.position; 
         //avatar.transform.rotation = transform.rotation;
         //avatar.transform.position = new Vector3(gun.transform.position.x, gun.transform.position.y - 2, gun.transform.position.z);
         //avatar.transform.localRotation = gun.transform.rotation;
 
         //if (transform.position.y <= 1.0f)
-            //transform.position = new Vector3(transform.position.x, 1.0f, transform.position.z);
+        //transform.position = new Vector3(transform.position.x, 1.0f, transform.position.z);
     }
 
     void FixedUpdate()
