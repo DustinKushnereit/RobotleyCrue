@@ -216,7 +216,7 @@ public class Player : MonoBehaviour
         {
             //Vector3 mDirection = (new Vector3(transform.localEulerAngles.x, 0, transform.localEulerAngles.y).normalized);
             GameObject bulletInstance = Instantiate(bullet, new Vector3(playerLeftArm.transform.position.x, playerLeftArm.transform.position.y, playerLeftArm.transform.position.z), playerLeftArm.transform.rotation) as GameObject;
-            bulletInstance.GetComponent<Rigidbody>().AddForce(new Vector3(playerLeftArm.transform.up.x * 28, 0, playerLeftArm.transform.up.z * 28.0f), ForceMode.VelocityChange);
+            bulletInstance.GetComponent<Rigidbody>().AddForce(playerLeftArm.transform.up * 28, ForceMode.VelocityChange);
 
             /*Rigidbody bulletClone;
             bulletClone = Instantiate(bullet, bullet.transform.position, bullet.transform.rotation) as Rigidbody;
