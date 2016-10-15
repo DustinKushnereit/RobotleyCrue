@@ -1195,7 +1195,7 @@ public class KinectManager : MonoBehaviour
 										vCursorPos = player.GetComponent<Camera>().ViewportToWorldPoint(vCursorPos);
 									}
 
-									HandCursor1.transform.position = Vector3.Lerp(HandCursor1.transform.position, vCursorPos, 3 * Time.deltaTime);
+									HandCursor1.transform.position = Vector3.Lerp(HandCursor1.transform.position, vCursorPos, 2 * Time.deltaTime);
 								}
 								
 								if(ControlMouseCursor)

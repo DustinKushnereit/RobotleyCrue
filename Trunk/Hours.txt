@@ -12,3 +12,10 @@
 10/14
 	3.5 hours
 	Gun Firing correctly
+	
+10/15
+	3 hours
+	fixed gun movevment and bullet spawning
+	fixed movement
+	added health bar, and ammo count text
+	added win loss text

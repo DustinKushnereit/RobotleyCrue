@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     float m_health;
 
     Vector3 moveDirection;
-    float m_moveSpeed = 6.0f;
+    float m_moveSpeed = 5.0f;
     float m_rotationalSpeed = 8.0f;
     private float yLookSensitivity = 0.03f;
     private bool autoLookCenter = true;
@@ -55,9 +55,17 @@ public class Player : MonoBehaviour
     private float m_InvincibleFrames;
     private const float m_MAXINCIBILITY = 0.3f;
 
+    //Gun
     public GameObject guitarTip;
     public GameObject avatarLeftHand;
     public GameObject playerLeftArm;
+
+    //End Game Bools
+    public bool youLoseBool = false;
+    public bool youWinBool = false;
+    private float timeToReset = 10.0f;
+    public Text lossText;
+    public Text winText;
 
     void Start ()
     {
@@ -108,7 +116,12 @@ public class Player : MonoBehaviour
 
         float angleZ = rotation.eulerAngles.z + (90 * -guitarTip.transform.position.y);
 
-        playerLeftArm.transform.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y + 100, angleZ);
+        playerLeftArm.transform.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, angleZ);
+
+        if(playerLeftArm.transform.eulerAngles.z <= 65)
+            playerLeftArm.transform.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, 65);
+
+        checkWinLoss();
     }
 
     void FixedUpdate()
@@ -148,7 +161,7 @@ public class Player : MonoBehaviour
 
     void checkInputController()
     {
-        try
+        /*try
         {
             if (gamePad.IsConnected)
             {
@@ -182,9 +195,39 @@ public class Player : MonoBehaviour
         catch
         {
             Debug.Log("Caught a crash? (gamepad probably)");
+        }*/
+
+        if(gamePad.GetButton("A"))
+        {
+            Vector3 moveDirection = new Vector3(0, 0, -1);
+            transform.Translate(moveDirection * m_moveSpeed * Time.deltaTime);
         }
-        
-        if(gamePad.GetTriggerTap_L() && !swordSwing)
+
+        if (gamePad.GetButton("Y"))
+        {
+            Vector3 moveDirection = new Vector3(0, 0, 1);
+            transform.Translate(moveDirection * m_moveSpeed * Time.deltaTime);
+        }
+
+        if (gamePad.GetButton("X"))
+        {
+            Vector3 moveDirection = new Vector3(-1, 0, 0);
+            transform.Translate(moveDirection * m_moveSpeed * Time.deltaTime);
+        }
+
+        if (gamePad.GetButton("B"))
+        {
+            Vector3 moveDirection = new Vector3(1, 0, 0);
+            transform.Translate(moveDirection * m_moveSpeed * Time.deltaTime);
+        }
+
+        if (gamePad.GetButtonDown("RB"))
+        {
+            //reload();
+            TakeDamage(1);
+        }
+
+        if (gamePad.GetTriggerTap_L() && !swordSwing)
         {
             swordSwing = true;
 
@@ -207,16 +250,16 @@ public class Player : MonoBehaviour
         if(gamePad.GetTriggerTap_R() && canAttack)
         {
             //Vector3 mDirection = (new Vector3(transform.localEulerAngles.x, 0, transform.localEulerAngles.y).normalized);
+            
+            //new Vector3(playerLeftArm.transform.position.x, playerLeftArm.transform.position.y, playerLeftArm.transform.position.z)
             GameObject bulletInstance = Instantiate(bullet, new Vector3(playerLeftArm.transform.position.x, playerLeftArm.transform.position.y, playerLeftArm.transform.position.z), playerLeftArm.transform.rotation) as GameObject;
-            bulletInstance.GetComponent<Rigidbody>().AddForce(playerLeftArm.transform.up * 28, ForceMode.VelocityChange);
+            bulletInstance.GetComponent<Rigidbody>().AddForce(playerLeftArm.transform.up * 38, ForceMode.VelocityChange);
 
             /*Rigidbody bulletClone;
             bulletClone = Instantiate(bullet, bullet.transform.position, bullet.transform.rotation) as Rigidbody;
             bulletClone.AddForce(bullet.transform.forward * 28.0f);*/
 
             music.playGunSound();
-            canAttack = false;
-            Invoke("AttackEnable", 0.1f);
         }
 
         if (gamePad.GetButton("RB") && beatsPowerSlider.value >= 10) //values is from 0-10
@@ -241,7 +284,7 @@ public class Player : MonoBehaviour
         startingAttack = true;
     }
 
-    void AttackEnable()
+    void reload()
     {
         canAttack = true;
     }
@@ -271,7 +314,36 @@ public class Player : MonoBehaviour
 
         if (m_health <= 0)
         {
-            SceneManager.LoadScene(0, LoadSceneMode.Single);
+            youLoseBool = true;
+        }
+    }
+
+    void checkWinLoss()
+    {
+        if (youLoseBool)
+        {
+            lossText.enabled = true;
+            timeToReset -= Time.deltaTime;
+
+            if (timeToReset <= 0.0f)
+            {
+                timeToReset = 10.0f;
+                youLoseBool = false;
+                SceneManager.LoadScene(0, LoadSceneMode.Single);
+            }
+        }
+
+        if (youWinBool)
+        {
+            winText.enabled = true;
+            timeToReset -= Time.deltaTime;
+
+            if (timeToReset <= 0.0f)
+            {
+                timeToReset = 10.0f;
+                youWinBool = false;
+                SceneManager.LoadScene(0, LoadSceneMode.Single);
+            }
         }
     }
 
