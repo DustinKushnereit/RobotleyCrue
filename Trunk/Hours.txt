@@ -1,27 +1,27 @@
 10/13
-	6 hours
+	6 hours - Dustin
 	add Kinect support to FPS version of DJ Clone
 	Camera tweaking
 	Aim tweaking
 	Explore Kinect Code
 	
 10/13
-	2 hours 
+	2 hours - Ryan
 	modeling hand and gun
 	
 10/14
-	3.5 hours
+	3.5 hours -Ryan and Dustin
 	Gun Firing correctly
 	
 10/15
-	3 hours
+	3 hours - Dustin
 	fixed gun movevment and bullet spawning
 	fixed movement
 	added health bar, and ammo count text
 	added win loss text
 	
 10/17
-	6 hours
+	6 hours - Dustin
 	Added in basis for glwoing futuristic city.
 	Ground reflects glowing.
 	player's gun reflects glowing
