@@ -19,3 +19,9 @@
 	fixed movement
 	added health bar, and ammo count text
 	added win loss text
+	
+10/17
+	6 hours
+	Added in basis for glwoing futuristic city.
+	Ground reflects glowing.
+	player's gun reflects glowing
