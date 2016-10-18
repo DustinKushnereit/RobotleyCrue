@@ -38,3 +38,7 @@
 	
 	4 hours - Dustin
 	Tried to add menu
+	
+	1 hours
+	fixed menu
+	fixed enemies getting behind player
