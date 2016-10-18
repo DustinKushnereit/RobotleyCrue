@@ -1,5 +1,14 @@
 Make Menu - can choose gun
+	disable wave manager
+	disbale movement
+	disable base UI
+	move camera to black background
+	cange kinect manager
+	
 make shot gun
 
 Make thrusters for enemies
 player 2 - one main camera
+
+Player Position
+-.5 3.64 -18.63

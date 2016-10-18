@@ -35,3 +35,6 @@
 	fixed kinect sensitivity, 
 	set game up to work with guitar hero controller, 
 	various minor changes
+	
+	4 hours - Dustin
+	Tried to add menu
