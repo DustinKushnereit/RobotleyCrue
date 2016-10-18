@@ -10,35 +10,34 @@ public class Player : MonoBehaviour
 {
     float m_health;
 
-    Vector3 moveDirection;
-    float m_moveSpeed = 5.0f;
-    float m_rotationalSpeed = 8.0f;
-    private float yLookSensitivity = 0.03f;
-    private bool autoLookCenter = true;
-    bool canMove;
-    public bool swordSwing;
+    GlobalMusicScript music;
+
     float timer;
     bool canAttack;
 
-    public GameObject swordAndArm;
-    private Vector3 startingArmRot = new Vector3(0.0f, 90.0f, 60.0f);
-    private Vector3 endingArmRot = new Vector3(0.0f, 90.0f, 130.0f);
-    private bool startingAttack;
-    Vector3 currentAngle;
+    //Movement
+    bool canMove;
+    bool reachEquilibrium;
+    float moveSpeed = 5.0f;
+    float incrementingX;
+    float incrementingZ;
+    bool moveLeft;
+    bool moveRight;
+    bool moveForward;
+    bool moveBackward;
 
     float leftStickX;
     float leftStickY;
     float rightStickX;
     float rightStickY;
 
+    //Rumble
     private float rumbleCounter = 0.0f;
     private const float MAX_RUMBLE = 0.25f;
     private bool isRumble;
-
     x360_Gamepad gamePad;
 
-    GlobalMusicScript music;
-
+    //Public Objects
     public GameObject bullet;
     public GameObject gun;
     public GameObject beatsFireBlast;
@@ -46,9 +45,6 @@ public class Player : MonoBehaviour
     //UI Stuff
     public Slider healthSlider;
     public Slider beatsPowerSlider;
-    public GameObject beatObject;
-    private bool m_BeatMovingLeft;
-    public bool m_OnBeat;
 
     //Invincible frames
     private bool m_Invincible;
@@ -59,6 +55,18 @@ public class Player : MonoBehaviour
     public GameObject guitarTip;
     public GameObject avatarLeftHand;
     public GameObject playerLeftArm;
+    public int ammoCount;
+    public int maxAmmo;
+    bool fireOnce;
+    bool canReload;
+    public Text ammoText;
+
+    //Grenade
+    public GameObject flashBang;
+    bool canFireGrenade;
+    public Text grenadeText;
+    public int grenadeCount;
+    public int maxGrenadeCount;
 
     //End Game Bools
     public bool youLoseBool = false;
@@ -71,28 +79,41 @@ public class Player : MonoBehaviour
     {
         m_health = healthSlider.value = 20;
         beatsPowerSlider.value = 0;
-        beatObject.transform.localPosition = Vector3.zero;
 
         m_InvincibleFrames = m_MAXINCIBILITY;
         m_Invincible = false;
 
         gamePad = GamepadManager.Instance.GetGamepad(1);
-        moveDirection = (new Vector3(Mathf.Atan(1.0f) * 180 / Mathf.PI, 0, Mathf.Atan(1.0f) * 180 / Mathf.PI).normalized);
         canMove = true;
-        swordSwing = false;
         canAttack = true;
-
-        m_OnBeat = true;
-        m_BeatMovingLeft = false;
-
-        startingAttack = true;
-        currentAngle = startingArmRot;
+        
+        moveLeft = false;
+        moveRight = false;
+        moveForward = false;
+        moveBackward = false;
+        reachEquilibrium = false;
+        incrementingX = 0.0f;
+        incrementingZ = 0.0f;
 
         music = GameObject.Find("GlobalSF").GetComponent<GlobalMusicScript>();
+
+        ammoCount = maxAmmo;
+        grenadeCount = maxGrenadeCount;
+        fireOnce = true;
+        canReload = true;
+        canFireGrenade = true;
+
+        if (ammoText != null)
+            ammoText.text = ammoCount + "/" + maxAmmo;
+
+        if (grenadeText != null)
+            grenadeText.text = grenadeCount + "/" + maxGrenadeCount;
     }
 
     void Update ()
     {
+        checkWinLoss();
+
         if (canMove)
             checkInputController();
 
@@ -101,13 +122,21 @@ public class Player : MonoBehaviour
 
         if (m_Invincible)
             checkInvibilityFrames();
+  
+        movePlayer();
+        moveGun();
+        checkAmmo();
 
+        if (ammoText != null)
+            ammoText.text = ammoCount + "/" + maxAmmo;
+
+        if (grenadeText != null)
+            grenadeText.text = grenadeCount + "/" + maxGrenadeCount;
+    }
+
+    void moveGun()
+    {
         timer = Mathf.Clamp(timer + Time.deltaTime, 0.0f, 1.0f / 5.0f);
-
-        if (swordSwing)
-        {
-            Invoke("ResetArm", 0.4f);
-        }
 
         avatarLeftHand.transform.position = guitarTip.transform.position;
 
@@ -118,34 +147,8 @@ public class Player : MonoBehaviour
 
         playerLeftArm.transform.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, angleZ);
 
-        if(playerLeftArm.transform.eulerAngles.z <= 65)
+        if (playerLeftArm.transform.eulerAngles.z <= 65)
             playerLeftArm.transform.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, 65);
-
-        checkWinLoss();
-    }
-
-    void FixedUpdate()
-    {
-        Vector3 newLoc = beatObject.transform.localPosition;
-
-        if(m_BeatMovingLeft)
-        {
-            newLoc.x += 7.4534f;
-        }
-        else 
-        {
-            newLoc.x -= 7.4534f;
-        }
-			
-        beatObject.transform.localPosition = newLoc;
-
-        if (newLoc.x > -43 && newLoc.x < 43)
-            m_OnBeat = true; 
-        else
-            m_OnBeat = false;
-
-        if (newLoc.x < -90 || newLoc.x > 90)
-            m_BeatMovingLeft = !m_BeatMovingLeft;
     }
 
     void checkInvibilityFrames()
@@ -161,114 +164,91 @@ public class Player : MonoBehaviour
 
     void checkInputController()
     {
-        /*try
+        if (gamePad.IsConnected)
         {
-            if (gamePad.IsConnected)
+            rightStickX = gamePad.GetStick_R().X;
+
+            if (rightStickX >= 0.2f && canFireGrenade && grenadeCount > 0)
             {
-                rightStickX = gamePad.GetStick_R().X;
-                rightStickY = gamePad.GetStick_R().Y;
-                leftStickX = gamePad.GetStick_L().X;
-                leftStickY = gamePad.GetStick_L().Y;
+                //Debug.Log("Pressed Whammy RightX");
+                canFireGrenade = false;
+                grenadeCount--;
 
-                if (leftStickX != 0.0f || leftStickY != 0.0f)
-                {
-                    Vector3 moveDirection = new Vector3(leftStickX, 0, leftStickY);
-                    transform.Translate(moveDirection * m_moveSpeed * Time.deltaTime);
+                Vector3 m_direction = (new Vector3(Mathf.Atan(0.0f) * 180 / Mathf.PI, 0, Mathf.Atan(1.0f) * 180 / Mathf.PI).normalized);
+                GameObject flashBangObject = Instantiate(flashBang, (m_direction + new Vector3(transform.position.x, transform.position.y + 1.0f, transform.position.z + 1.0f)), Quaternion.LookRotation(m_direction)) as GameObject;
+                flashBangObject.GetComponent<Rigidbody>().AddForce(m_direction * 10.0f, ForceMode.VelocityChange);
 
-                    music.playWalkSound();
-                }
+                Vector3 force = (transform.up * 3.0f) / Time.deltaTime;
+                force *= 2.5f;
+                flashBangObject.GetComponent<Rigidbody>().AddForce(force);
 
-                if (rightStickX != 0.0f)
-                {
-                    transform.Rotate(0, rightStickX * m_rotationalSpeed, 0);
-                }
-                if(rightStickY != 0.0f)
-                {
-                    transform.Rotate(-rightStickY * (m_rotationalSpeed/2), 0, 0);
-                }
-
-                Quaternion q = transform.rotation;
-                q.eulerAngles = new Vector3(q.eulerAngles.x, q.eulerAngles.y, 0);
-                transform.rotation = q;
+                Destroy(flashBangObject, flashBangObject.GetComponent<ParticleSystem>().duration);
+            }
+            else if (rightStickX < 0.2f && !canFireGrenade)
+            {
+                canFireGrenade = true;
             }
         }
-        catch
-        {
-            Debug.Log("Caught a crash? (gamepad probably)");
-        }*/
 
-        if(gamePad.GetButton("A"))
+        if (gamePad.GetButton("B"))//Forwards, Red Button
         {
-            Vector3 moveDirection = new Vector3(0, 0, -1);
-            transform.Translate(moveDirection * m_moveSpeed * Time.deltaTime);
+            moveForward = true;
+            //Vector3 moveDirection = new Vector3(0, 0, 1);
+            //transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
+        }
+        else if (!gamePad.GetButton("B"))
+        {
+            moveForward = false;
+            reachEquilibrium = true;
         }
 
-        if (gamePad.GetButton("Y"))
+        if (gamePad.GetButton("Y"))//Left, Yellow Button
         {
-            Vector3 moveDirection = new Vector3(0, 0, 1);
-            transform.Translate(moveDirection * m_moveSpeed * Time.deltaTime);
+            moveLeft = true;
+        }
+        else if (!gamePad.GetButton("Y"))
+        {
+            moveLeft = false;
+            reachEquilibrium = true;
         }
 
-        if (gamePad.GetButton("X"))
+        if (gamePad.GetButton("X"))//Right, Blue button
         {
-            Vector3 moveDirection = new Vector3(-1, 0, 0);
-            transform.Translate(moveDirection * m_moveSpeed * Time.deltaTime);
+            moveRight = true;
+        }
+        else if (!gamePad.GetButton("X"))
+        {
+            moveRight = false;
+            reachEquilibrium = true;
         }
 
-        if (gamePad.GetButton("B"))
+        if (gamePad.GetButton("LB"))//Backwards, Orange Button
         {
-            Vector3 moveDirection = new Vector3(1, 0, 0);
-            transform.Translate(moveDirection * m_moveSpeed * Time.deltaTime);
+            moveBackward = true;
+        }
+        else if (!gamePad.GetButton("LB"))
+        {
+            moveBackward = false;
+            reachEquilibrium = true;
         }
 
-        if (gamePad.GetButtonDown("RB"))
+        if (gamePad.GetButton("A") && canReload)
         {
-            //reload();
-            TakeDamage(1);
+            canReload = false;
+            reload();
+            //TakeDamage(1);
+        }
+        else if(!gamePad.GetButton("A") && !canReload)
+        {
+            canReload = true;
         }
 
-        if (gamePad.GetTriggerTap_L() && !swordSwing)
+        if ((gamePad.GetButton("DPad_Up") || gamePad.GetButton("DPad_Down")) && fireOnce && canAttack) //The flipper is DPad_up and DPad_Down
         {
-            swordSwing = true;
-
-            if (startingAttack)
-            {
-                currentAngle = startingArmRot;
-                startingAttack = false;
-                music.playSwordSound();
-            }
-
-            currentAngle = new Vector3(
-            Mathf.LerpAngle(currentAngle.x, endingArmRot.x, timer * 5.5f),
-            Mathf.LerpAngle(currentAngle.y, endingArmRot.y, timer * 5.5f),
-            Mathf.LerpAngle(currentAngle.z, endingArmRot.z, timer * 5.5f));
-
-            swordAndArm.transform.localEulerAngles = currentAngle;      
-
-        }
-
-        if(gamePad.GetTriggerTap_R() && canAttack)
-        {
-            //Vector3 mDirection = (new Vector3(transform.localEulerAngles.x, 0, transform.localEulerAngles.y).normalized);
-            
-            //new Vector3(playerLeftArm.transform.position.x, playerLeftArm.transform.position.y, playerLeftArm.transform.position.z)
+            fireOnce = false;
+            ammoCount--;
             GameObject bulletInstance = Instantiate(bullet, new Vector3(playerLeftArm.transform.position.x, playerLeftArm.transform.position.y, playerLeftArm.transform.position.z), playerLeftArm.transform.rotation) as GameObject;
             bulletInstance.GetComponent<Rigidbody>().AddForce(playerLeftArm.transform.up * 38, ForceMode.VelocityChange);
-
-            /*Rigidbody bulletClone;
-            bulletClone = Instantiate(bullet, bullet.transform.position, bullet.transform.rotation) as Rigidbody;
-            bulletClone.AddForce(bullet.transform.forward * 28.0f);*/
-
-            music.playGunSound();
-        }
-
-        if (gamePad.GetButton("RB") && beatsPowerSlider.value >= 10) //values is from 0-10
-        {
-            //abilityCanBeUsed = false;
-            beatsPowerSlider.value = 0;
-
-            GameObject particleEffect = (GameObject)Instantiate(beatsFireBlast, new Vector3(transform.position.x, 0.5f, transform.position.z), Quaternion.Euler(beatsFireBlast.transform.eulerAngles)) as GameObject;
-            Destroy(particleEffect, particleEffect.GetComponent<ParticleSystem>().duration);
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -277,31 +257,94 @@ public class Player : MonoBehaviour
         }
     }
 
-    void ResetArm()
+    void movePlayer()
+    {
+        transform.position += new Vector3(incrementingX, 0.0f, incrementingZ) * moveSpeed * Time.deltaTime;
+
+        if (moveRight)
+        {
+            if (incrementingX < 1.0f)
+                incrementingX += 0.1f;
+        }
+
+        if (moveLeft)
+        {
+            if (incrementingX > -1.0f)
+                incrementingX -= 0.1f;
+        }
+
+        if (moveForward)
+        {
+            if (incrementingZ < 1.0f)
+                incrementingZ += 0.1f;
+        }
+
+        if (moveBackward)
+        {
+            if (incrementingZ > -1.0f)
+                incrementingZ -= 0.1f;
+        }
+
+        if (reachEquilibrium)
+        {
+            if (incrementingX < 0.01f)
+                incrementingX += 0.01f;
+
+            if (incrementingX > 0.0f)
+                incrementingX -= 0.01f;
+
+            if (incrementingZ < 0.01f)
+                incrementingZ += 0.01f;
+
+            if (incrementingZ > 0.0f)
+                incrementingZ -= 0.01f;
+
+            if (incrementingX == 0.0f || incrementingZ == 0.0f)
+                reachEquilibrium = false;
+        }
+    }
+
+    /*void ResetArm()
     {
         swordAndArm.transform.localEulerAngles = startingArmRot;
         swordSwing = false;
         startingAttack = true;
-    }
+    }*/
 
     void reload()
     {
         canAttack = true;
+        ammoCount = maxAmmo;
+    }
+
+    void checkAmmo()
+    {
+        if ((!gamePad.GetButton("DPad_Up") && !gamePad.GetButton("DPad_Down")) && !fireOnce)
+        {
+            fireOnce = true;
+        }
+
+        if(ammoCount <= 0)
+        {
+            canAttack = false;
+        }
     }
 
     void OnTriggerEnter(Collider collider)
     {
         if (collider.tag == "Enemy" && !m_Invincible)
         {
-            if(!swordSwing)
-            {
-                TakeDamage(1);
-            }
+            TakeDamage(1);
         }
 
-        else if (collider.tag == "EnemyBullet" && !m_Invincible)
+        if (collider.tag == "EnemyBullet" && !m_Invincible)
         {
             TakeDamage(1);
+        }
+
+        if(collider.tag == "Goal")
+        {
+            youWinBool = true;
         }
     }
 

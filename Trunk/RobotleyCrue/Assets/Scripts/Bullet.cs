@@ -5,7 +5,7 @@ public class Bullet : MonoBehaviour
 {
     public GameObject particleSystemExplosion;
 
-    float timeRemaining = 8.0f;
+    float timeRemaining = 4.0f;
 
     void Update()
     {

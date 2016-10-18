@@ -33,7 +33,7 @@ public class WaveManager : MonoBehaviour
 
     bool gameOver = false;
     bool playerVictory = false;
-    
+
     Vector3 spawnPosition;
 
     public GameObject bossSpawnIndicator;
@@ -45,17 +45,26 @@ public class WaveManager : MonoBehaviour
 
     void Start()
     {
-        float tempX = Random.insideUnitCircle.x;
-        float tempY = Random.insideUnitCircle.y;
-
-        spawnPosition = new Vector3(0, 2, 0);
+        spawnPosition = transform.position;
         
         totalEnemies = 0;
         enemiesKilled = 0;
         Invoke("StartWave", waveSpawnDelay);
+
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()
+    {
+        spawnPosition = new Vector3(transform.position.x, transform.position.y, player.transform.position.z + 20);
+
+        if (player.transform.position.z <= 80)
+        {
+            checkBossSpawn();
+        }
+    }
+
+    void checkBossSpawn()
     {
         if (!finalBoss)
         {
@@ -63,7 +72,6 @@ public class WaveManager : MonoBehaviour
             {
                 if (incrementer >= waveLength)
                     StopSpawning();
-
             }
             else if (waveStart && CheckCount())
             {
@@ -80,7 +88,6 @@ public class WaveManager : MonoBehaviour
 
             spawnOnce = true;
 
-            spawnPosition = new Vector3(0, 2, 0);
             explosion = (GameObject)Instantiate(bossSpawnIndicator, spawnPosition, bossSpawnIndicator.transform.rotation);
             Destroy(explosion, explosion.GetComponent<ParticleSystem>().duration);
         }
@@ -89,7 +96,6 @@ public class WaveManager : MonoBehaviour
         {
             if (explosion == null)
             {
-                spawnPosition = new Vector3(0, 2, 0);
                 Instantiate(bossTypes[0], spawnPosition, bossTypes[0].transform.rotation);
                 spawnOnce = false;
             }
@@ -97,7 +103,6 @@ public class WaveManager : MonoBehaviour
 
         if (littleBossSpawn)
         {
-            spawnPosition = new Vector3(0, 2, 0);
             explosion = (GameObject)Instantiate(bossSpawnIndicator, spawnPosition, bossSpawnIndicator.transform.rotation);
             Destroy(explosion, explosion.GetComponent<ParticleSystem>().duration);
 
@@ -109,7 +114,6 @@ public class WaveManager : MonoBehaviour
         {
             if (explosion == null)
             {
-                spawnPosition = new Vector3(0, 2, 0);
                 Instantiate(bossTypes[0], spawnPosition, bossTypes[0].transform.rotation);
                 littleBossSpawnOnce = false;
             }
@@ -136,7 +140,6 @@ public class WaveManager : MonoBehaviour
 
     void StartWave()
     {
-
         enemiesKilled = 0;
         
         waveLength = ((currWave + 1) * 2) + 1;
@@ -178,10 +181,10 @@ public class WaveManager : MonoBehaviour
     {
         if (!waveEnd)
         {
-            spawnPosition = new Vector3(Random.insideUnitCircle.x, 0, Random.insideUnitCircle.y).normalized * spawnRadius;
+            spawnPosition = new Vector3(Random.insideUnitCircle.x * 5, spawnPosition.y, spawnPosition.z);
 
             if (incrementer % 3 == 0)
-                Instantiate(enemyTypes[0], spawnPosition, enemyTypes[0].transform.rotation);
+                Instantiate(enemyTypes[1], spawnPosition, enemyTypes[1].transform.rotation);
             else
                 Instantiate(enemyTypes[0], spawnPosition, enemyTypes[0].transform.rotation);
 

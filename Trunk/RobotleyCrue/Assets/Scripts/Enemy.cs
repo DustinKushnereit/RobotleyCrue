@@ -4,8 +4,9 @@ using System.Collections;
 public class Enemy : MonoBehaviour
 {
     float m_health;
-    float m_speed;
     float m_damage;
+    public float movementSpeed = 3.0f;
+    public bool isRanged;
 
     GameObject player;
     public GameObject particleSystemExplosion;
@@ -27,15 +28,14 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         m_health = 10;
-        m_speed = 6;
         m_damage = 10;
         player = GameObject.FindGameObjectWithTag("Player");
 
         navComp = GetComponent<NavMeshAgent>();
-        navComp.speed = 3;
+        navComp.speed = movementSpeed;
 
         m_CanShoot = false;
-        m_TimeTilShoot = 3.0f;
+        m_TimeTilShoot = 6.0f;
     }
 
     void Update()
@@ -44,7 +44,7 @@ public class Enemy : MonoBehaviour
 
         timer = Mathf.Clamp(timer + Time.deltaTime, 0.0f, 1.0f / 5.0f);
 
-        if (m_CanShoot)
+        if (m_CanShoot && isRanged)
             ShootGun();
         else
             gunCoolDown();
@@ -61,25 +61,16 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.tag == "PlayerWeapon" && player.GetComponent<Player>().swordSwing == true)
+        if(collider.tag == "PlayerBullet")
         {
-            if (player.GetComponent<Player>().m_OnBeat)
-            {
-                TakeDamage(5);
-                print("On beat");
-            }     
-            else
-                TakeDamage(2);
+            TakeDamage(5);
+
+            GameObject explosion = (GameObject)Instantiate(gotHitExplosion, transform.position, gotHitExplosion.transform.rotation);
+            Destroy(explosion, explosion.GetComponent<ParticleSystem>().duration);
         }
-        else if(collider.tag == "PlayerBullet")
+        if (collider.tag == "PlayerGrenade")
         {
-            if (player.GetComponent<Player>().m_OnBeat)
-            {
-                TakeDamage(5);
-                print("On beat");
-            } 
-            else
-                TakeDamage(2);
+            TakeDamage(10);
 
             GameObject explosion = (GameObject)Instantiate(gotHitExplosion, transform.position, gotHitExplosion.transform.rotation);
             Destroy(explosion, explosion.GetComponent<ParticleSystem>().duration);
@@ -98,8 +89,8 @@ public class Enemy : MonoBehaviour
         if(m_TimeTilShoot <= 0.0f)
         {
             m_CanShoot = true;
-            float randomNum = Random.Range(1.0f, m_MAXTIMETILSHOOT);
-            m_TimeTilShoot = randomNum;
+            //float randomNum = Random.Range(1.0f, m_MAXTIMETILSHOOT);
+            m_TimeTilShoot = 6.0f;
         }
     }
 
