@@ -60,6 +60,7 @@ public class Player : MonoBehaviour
     bool fireOnce;
     bool canReload;
     public Text ammoText;
+    
 
     //Grenade
     public GameObject flashBang;
@@ -74,6 +75,12 @@ public class Player : MonoBehaviour
     private float timeToReset = 10.0f;
     public Text lossText;
     public Text winText;
+
+    //Menu
+    public bool inMenu;
+    public bool m16;
+    public bool shotgun;
+    public bool Continue;
 
     void Start ()
     {
@@ -108,30 +115,42 @@ public class Player : MonoBehaviour
 
         if (grenadeText != null)
             grenadeText.text = grenadeCount + "/" + maxGrenadeCount;
+
+        inMenu = true;
+        shotgun = false;
+        m16 = false;
+        Continue = false;
     }
 
     void Update ()
     {
-        checkWinLoss();
+        //if (!inMenu)
+        {
+            checkWinLoss();
 
-        if (canMove)
-            checkInputController();
+            if (canMove)
+                checkInputController();
 
-        if (isRumble)
-            vibrateController();
+            if (isRumble)
+                vibrateController();
 
-        if (m_Invincible)
-            checkInvibilityFrames();
-  
-        movePlayer();
-        moveGun();
-        checkAmmo();
+            if (m_Invincible)
+                checkInvibilityFrames();
 
-        if (ammoText != null)
-            ammoText.text = ammoCount + "/" + maxAmmo;
+            movePlayer();
+            moveGun();
+            checkAmmo();
 
-        if (grenadeText != null)
-            grenadeText.text = grenadeCount + "/" + maxGrenadeCount;
+            if (ammoText != null)
+                ammoText.text = ammoCount + "/" + maxAmmo;
+
+            if (grenadeText != null)
+                grenadeText.text = grenadeCount + "/" + maxGrenadeCount;
+        }
+        /*else
+        {
+            checkMenu();
+        }*/
     }
 
     void moveGun()
@@ -236,7 +255,6 @@ public class Player : MonoBehaviour
         {
             canReload = false;
             reload();
-            //TakeDamage(1);
         }
         else if(!gamePad.GetButton("A") && !canReload)
         {
@@ -247,7 +265,7 @@ public class Player : MonoBehaviour
         {
             fireOnce = false;
             ammoCount--;
-            GameObject bulletInstance = Instantiate(bullet, new Vector3(playerLeftArm.transform.position.x, playerLeftArm.transform.position.y, playerLeftArm.transform.position.z), playerLeftArm.transform.rotation) as GameObject;
+            GameObject bulletInstance = Instantiate(bullet, new Vector3(playerLeftArm.transform.position.x - 0.1f, playerLeftArm.transform.position.y - 0.1f, playerLeftArm.transform.position.z - 0.1f), playerLeftArm.transform.rotation) as GameObject;
             bulletInstance.GetComponent<Rigidbody>().AddForce(playerLeftArm.transform.up * 38, ForceMode.VelocityChange);
         }
 
@@ -304,13 +322,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    /*void ResetArm()
-    {
-        swordAndArm.transform.localEulerAngles = startingArmRot;
-        swordSwing = false;
-        startingAttack = true;
-    }*/
-
     void reload()
     {
         canAttack = true;
@@ -328,6 +339,21 @@ public class Player : MonoBehaviour
         {
             canAttack = false;
         }
+    }
+
+    void checkMenu()
+    {
+        moveGun();
+
+        if ((gamePad.GetButton("DPad_Up") || gamePad.GetButton("DPad_Down")) && fireOnce) //The flipper is DPad_up and DPad_Down
+        {
+            fireOnce = false;
+
+            GameObject bulletInstance = Instantiate(bullet, new Vector3(playerLeftArm.transform.position.x - 0.1f, playerLeftArm.transform.position.y - 0.1f, playerLeftArm.transform.position.z - 0.1f), playerLeftArm.transform.rotation) as GameObject;
+            bulletInstance.GetComponent<Rigidbody>().AddForce(playerLeftArm.transform.up * 38, ForceMode.VelocityChange);
+        }
+
+        checkAmmo();
     }
 
     void OnTriggerEnter(Collider collider)

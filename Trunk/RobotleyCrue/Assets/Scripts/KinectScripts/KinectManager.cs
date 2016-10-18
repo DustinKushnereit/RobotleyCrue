@@ -1152,7 +1152,7 @@ public class KinectManager : MonoBehaviour
 							if(ControlMouseCursor)
 							{
 								MouseControl.MouseClick();
-							}
+                            }
 						}
 						
 						foreach(KinectGestures.GestureListenerInterface listener in gestureListeners)
