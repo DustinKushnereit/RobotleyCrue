@@ -124,7 +124,7 @@ public class Player : MonoBehaviour
 
     void Update ()
     {
-        //if (!inMenu)
+        if (!inMenu)
         {
             checkWinLoss();
 
@@ -147,10 +147,10 @@ public class Player : MonoBehaviour
             if (grenadeText != null)
                 grenadeText.text = grenadeCount + "/" + maxGrenadeCount;
         }
-        /*else
+        else
         {
             checkMenu();
-        }*/
+        }
     }
 
     void moveGun()
@@ -345,12 +345,25 @@ public class Player : MonoBehaviour
     {
         moveGun();
 
+        moveLeft = false;
+        moveRight = false;
+        moveForward = false;
+        moveBackward = false;
+        reachEquilibrium = false;
+        incrementingX = 0.0f;
+        incrementingZ = 0.0f;
+
         if ((gamePad.GetButton("DPad_Up") || gamePad.GetButton("DPad_Down")) && fireOnce) //The flipper is DPad_up and DPad_Down
         {
             fireOnce = false;
 
             GameObject bulletInstance = Instantiate(bullet, new Vector3(playerLeftArm.transform.position.x - 0.1f, playerLeftArm.transform.position.y - 0.1f, playerLeftArm.transform.position.z - 0.1f), playerLeftArm.transform.rotation) as GameObject;
             bulletInstance.GetComponent<Rigidbody>().AddForce(playerLeftArm.transform.up * 38, ForceMode.VelocityChange);
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(0, LoadSceneMode.Single);
         }
 
         checkAmmo();

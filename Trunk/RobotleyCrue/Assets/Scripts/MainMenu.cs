@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     public GameObject waveManager;
-    public GameObject kinectManager;
+    //public GameObject kinectManager;
     public GameObject mainCamera;
     public GameObject playerHealthBar;
     public GameObject canvasMenu;
@@ -24,7 +24,7 @@ public class MainMenu : MonoBehaviour
     public GameObject pillar9;
     public GameObject pillar5;
 
-    public GameObject player;
+    GameObject player;
     
     bool player1CanContinue;
 
@@ -41,6 +41,8 @@ public class MainMenu : MonoBehaviour
 
     void checkDistance()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
+
         if (player.GetComponent<Player>().m16)
         {
             player1CanContinue = true;
@@ -76,7 +78,7 @@ public class MainMenu : MonoBehaviour
             pillar9.SetActive(true);
             pillar5.SetActive(true);
             waveManager.SetActive(true);
-            kinectManager.SetActive(true);
+            //kinectManager.SetActive(true);
             mainCamera.SetActive(true);
             mainCamera.GetComponent<CameraFollowPlayer>().inMenu = false;
             playerHealthBar.SetActive(true);

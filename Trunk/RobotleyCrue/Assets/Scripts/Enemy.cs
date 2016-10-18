@@ -57,6 +57,11 @@ public class Enemy : MonoBehaviour
         Vector3 direction = (player.transform.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 2.0f);
+
+        if(transform.position.z <= player.transform.position.z)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, player.transform.position.z + 20);
+        }
     }
 
     void OnTriggerEnter(Collider collider)

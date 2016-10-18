@@ -31,9 +31,6 @@ public class WaveManager : MonoBehaviour
 
     GameObject player;
 
-    bool gameOver = false;
-    bool playerVictory = false;
-
     Vector3 spawnPosition;
 
     public GameObject bossSpawnIndicator;

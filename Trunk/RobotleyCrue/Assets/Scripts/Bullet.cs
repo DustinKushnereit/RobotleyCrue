@@ -23,21 +23,25 @@ public class Bullet : MonoBehaviour
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             player.GetComponent<Player>().m16 = true;
+            player.GetComponent<Player>().shotgun = false;
 
             GameObject explosion = (GameObject)Instantiate(particleSystemExplosion, transform.position, particleSystemExplosion.transform.rotation);
             Destroy(explosion, explosion.GetComponent<ParticleSystem>().duration);
             Destroy(this.gameObject);
         }
-        else if (collider.gameObject.tag.Equals("Shotgun"))
+
+        if (collider.gameObject.tag.Equals("Shotgun"))
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             player.GetComponent<Player>().shotgun = true;
+            player.GetComponent<Player>().m16 = false;
 
             GameObject explosion = (GameObject)Instantiate(particleSystemExplosion, transform.position, particleSystemExplosion.transform.rotation);
             Destroy(explosion, explosion.GetComponent<ParticleSystem>().duration);
             Destroy(this.gameObject);
         }
-        else if (collider.gameObject.tag.Equals("Continue"))
+
+        if (collider.gameObject.tag.Equals("Continue"))
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             player.GetComponent<Player>().Continue = true;
