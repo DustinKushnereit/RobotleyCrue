@@ -1,0 +1,5 @@
+Make Menu - can choose gun
+make shot gun
+
+Make thrusters for enemies
+player 2 - one main camera

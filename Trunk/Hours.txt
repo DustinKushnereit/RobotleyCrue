@@ -25,3 +25,13 @@
 	Added in basis for glwoing futuristic city.
 	Ground reflects glowing.
 	player's gun reflects glowing
+	
+10/18
+	6 hours - Dustin
+	Finished making level 1 city, 
+	added enemy spawner, 
+	added player grenade as well as realistic assault rifle fire, 
+	added ammo and grenade count, 
+	fixed kinect sensitivity, 
+	set game up to work with guitar hero controller, 
+	various minor changes
