@@ -13,9 +13,10 @@ public class KinectManager : MonoBehaviour
 	public enum Smoothing : int { None, Default, Medium, Aggressive }
 
     public GameObject player;
-	
-	// Public Bool to determine how many players there are. Default of one user.
-	public bool TwoUsers = false;
+    public GameObject player2;
+
+    // Public Bool to determine how many players there are. Default of one user.
+    public bool TwoUsers = false;
 	
 //	// Public Bool to determine if the sensor is used in near mode.
 //	public bool NearMode = false;
@@ -1274,19 +1275,19 @@ public class KinectManager : MonoBehaviour
 									
 									if(HandCursor2.GetComponent<GUITexture>() == null)
 									{
-										float zDist = HandCursor2.transform.position.z - Camera.main.transform.position.z;
+										float zDist = HandCursor2.transform.position.z - player2.GetComponent<Camera>().transform.position.z;
 										vCursorPos.z = zDist;
 										
-										vCursorPos = Camera.main.ViewportToWorldPoint(vCursorPos);
+										vCursorPos = player2.GetComponent<Camera>().ViewportToWorldPoint(vCursorPos);
 									}
 									
-									HandCursor2.transform.position = Vector3.Lerp(HandCursor2.transform.position, vCursorPos, 3 * Time.deltaTime);
+									HandCursor2.transform.position = Vector3.Lerp(HandCursor2.transform.position, vCursorPos, 1 * Time.deltaTime);
 								}
 								
 								if(ControlMouseCursor)
 								{
 									Vector3 vCursorPos = HandCursor2.GetComponent<GUITexture>() != null ? HandCursor2.transform.position :
-										Camera.main.WorldToViewportPoint(HandCursor2.transform.position);
+                                        player2.GetComponent<Camera>().WorldToViewportPoint(HandCursor2.transform.position);
 									MouseControl.MouseMove(vCursorPos, CalibrationText);
 								}
 							}

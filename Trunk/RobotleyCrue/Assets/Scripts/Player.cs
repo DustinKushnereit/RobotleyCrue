@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
 
     //Movement
     bool canMove;
-    bool reachEquilibrium;
+    public bool reachEquilibrium;
     float moveSpeed = 5.0f;
     float incrementingX;
     float incrementingZ;
@@ -30,6 +30,11 @@ public class Player : MonoBehaviour
     float leftStickY;
     float rightStickX;
     float rightStickY;
+
+    public bool isPlayer2;
+    public GameObject player1;
+    public GameObject player2;
+    bool disableForwards = true;
 
     //Rumble
     private float rumbleCounter = 0.0f;
@@ -47,7 +52,7 @@ public class Player : MonoBehaviour
     public Slider beatsPowerSlider;
 
     //Invincible frames
-    private bool m_Invincible;
+    public bool m_Invincible;
     private float m_InvincibleFrames;
     private const float m_MAXINCIBILITY = 0.3f;
 
@@ -82,6 +87,8 @@ public class Player : MonoBehaviour
     public bool shotgun;
     public bool Continue;
 
+    bool initialDisableBool = true;
+
     void Start ()
     {
         m_health = healthSlider.value = 20;
@@ -90,7 +97,11 @@ public class Player : MonoBehaviour
         m_InvincibleFrames = m_MAXINCIBILITY;
         m_Invincible = false;
 
-        gamePad = GamepadManager.Instance.GetGamepad(1);
+        if(!isPlayer2)
+            gamePad = GamepadManager.Instance.GetGamepad(1);
+        else
+            gamePad = GamepadManager.Instance.GetGamepad(1);
+
         canMove = true;
         canAttack = true;
         
@@ -101,8 +112,10 @@ public class Player : MonoBehaviour
         reachEquilibrium = false;
         incrementingX = 0.0f;
         incrementingZ = 0.0f;
+        initialDisableBool = true;
 
-        music = GameObject.Find("GlobalSF").GetComponent<GlobalMusicScript>();
+        if (!isPlayer2)
+            music = GameObject.Find("GlobalSF").GetComponent<GlobalMusicScript>();
 
         ammoCount = maxAmmo;
         grenadeCount = maxGrenadeCount;
@@ -126,6 +139,9 @@ public class Player : MonoBehaviour
     {
         if (!inMenu)
         {
+            //if(initialDisableBool)
+                //initialDisable();
+
             checkWinLoss();
 
             if (canMove)
@@ -136,8 +152,9 @@ public class Player : MonoBehaviour
 
             if (m_Invincible)
                 checkInvibilityFrames();
-
+            
             movePlayer();
+
             moveGun();
             checkAmmo();
 
@@ -150,6 +167,22 @@ public class Player : MonoBehaviour
         else
         {
             checkMenu();
+        }
+    }
+
+    void initialDisable()
+    {
+        if(initialDisableBool)
+        {
+            initialDisableBool = false;
+
+            moveLeft = false;
+            moveRight = false;
+            moveForward = false;
+            moveBackward = false;
+            reachEquilibrium = true;
+            incrementingX = 0.0f;
+            incrementingZ = 0.0f;
         }
     }
 
@@ -166,8 +199,16 @@ public class Player : MonoBehaviour
 
         playerLeftArm.transform.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, angleZ);
 
-        if (playerLeftArm.transform.eulerAngles.z <= 65)
-            playerLeftArm.transform.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, 65);
+        if (!isPlayer2)
+        {
+            if (playerLeftArm.transform.eulerAngles.z <= 95)
+                playerLeftArm.transform.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, 95);
+        }
+        else
+        {
+            if (playerLeftArm.transform.eulerAngles.z <= 95)
+                playerLeftArm.transform.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, 95);
+        }
     }
 
     void checkInvibilityFrames()
@@ -209,7 +250,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (gamePad.GetButton("B"))//Forwards, Red Button
+        if (gamePad.GetButton("B") && !disableForwards)//Forwards, Red Button
         {
             moveForward = true;
             //Vector3 moveDirection = new Vector3(0, 0, 1);
@@ -261,6 +302,20 @@ public class Player : MonoBehaviour
             canReload = true;
         }
 
+        if (gamePad.GetButton("Start"))
+        {
+            if (disableForwards)
+            {
+                disableForwards = false;
+                Debug.Log("false");
+            }
+            else if (!disableForwards)
+            {
+                disableForwards = true;
+                Debug.Log("true");
+            }
+        }
+
         if ((gamePad.GetButton("DPad_Up") || gamePad.GetButton("DPad_Down")) && fireOnce && canAttack) //The flipper is DPad_up and DPad_Down
         {
             fireOnce = false;
@@ -277,7 +332,8 @@ public class Player : MonoBehaviour
 
     void movePlayer()
     {
-        transform.position += new Vector3(incrementingX, 0.0f, incrementingZ) * moveSpeed * Time.deltaTime;
+        player1.transform.position += new Vector3(incrementingX, 0.0f, incrementingZ) * moveSpeed * Time.deltaTime;
+        player2.transform.position += new Vector3(incrementingX, 0.0f, incrementingZ) * moveSpeed * Time.deltaTime;
 
         if (moveRight)
         {
@@ -291,7 +347,7 @@ public class Player : MonoBehaviour
                 incrementingX -= 0.1f;
         }
 
-        if (moveForward)
+        if (moveForward && !disableForwards)
         {
             if (incrementingZ < 1.0f)
                 incrementingZ += 0.1f;
@@ -349,7 +405,7 @@ public class Player : MonoBehaviour
         moveRight = false;
         moveForward = false;
         moveBackward = false;
-        reachEquilibrium = false;
+        reachEquilibrium = true;
         incrementingX = 0.0f;
         incrementingZ = 0.0f;
 
@@ -364,6 +420,11 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(0, LoadSceneMode.Single);
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Continue = true;
         }
 
         checkAmmo();

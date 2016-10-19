@@ -24,29 +24,33 @@ public class MainMenu : MonoBehaviour
     public GameObject pillar9;
     public GameObject pillar5;
 
-    GameObject player;
-    
+    GameObject player1;
+    GameObject player2;
+
     bool player1CanContinue;
+    bool player2CanContinue;
 
     void Start ()
     {
         player1CanContinue = false;
+        player2CanContinue = false;
     }
 	
 	void Update ()
     {
-        checkDistance();
+        checkPlayer1();
+        checkPlayer2();
         checkContinue();
 	}
 
-    void checkDistance()
+    void checkPlayer1()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player1 = GameObject.FindGameObjectWithTag("Player");
 
-        if (player.GetComponent<Player>().m16)
+        if (player1.GetComponent<Player>().m16)
         {
             player1CanContinue = true;
-            player.GetComponent<Player>().shotgun = false;
+            player1.GetComponent<Player>().shotgun = false;
 
             if (p1M16 != null)
                 p1M16.enabled = true;
@@ -55,10 +59,10 @@ public class MainMenu : MonoBehaviour
                 p1Shotgun.enabled = false;
         }
 
-        if (player.GetComponent<Player>().shotgun)
+        if (player1.GetComponent<Player>().shotgun)
         {
             player1CanContinue = true;
-            player.GetComponent<Player>().m16 = false;
+            player1.GetComponent<Player>().m16 = false;
 
             if (p1Shotgun != null)
                 p1Shotgun.enabled = true;
@@ -68,12 +72,42 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    void checkPlayer2()
+    {
+        player2 = GameObject.FindGameObjectWithTag("Player2");
+
+        if (player2.GetComponent<Player>().m16)
+        {
+            player2CanContinue = true;
+            player2.GetComponent<Player>().shotgun = false;
+
+            if (p2M16 != null)
+                p2M16.enabled = true;
+
+            if (p2Shotgun != null)
+                p2Shotgun.enabled = false;
+        }
+
+        if (player2.GetComponent<Player>().shotgun)
+        {
+            player2CanContinue = true;
+            player2.GetComponent<Player>().m16 = false;
+
+            if (p2Shotgun != null)
+                p2Shotgun.enabled = true;
+
+            if (p2M16 != null)
+                p2M16.enabled = false;
+        }
+    }
+
     void checkContinue()
     {
-        if(player1CanContinue && player.GetComponent<Player>().Continue)
+        if(player1.GetComponent<Player>().Continue)// && player2CanContinue && player2.GetComponent<Player>().Continue)
         {
-            player.GetComponent<Player>().inMenu = false;
-            
+            player1.GetComponent<Player>().inMenu = false;
+            player2.GetComponent<Player>().inMenu = false;
+
             metalFloor.SetActive(true);
             pillar9.SetActive(true);
             pillar5.SetActive(true);

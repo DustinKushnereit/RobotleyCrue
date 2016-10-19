@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     public bool isRanged;
 
     GameObject player;
+    GameObject player2;
     public GameObject particleSystemExplosion;
     public GameObject gotHitExplosion;
     GameObject enemy;
@@ -17,6 +18,8 @@ public class Enemy : MonoBehaviour
     float timer;
 
     NavMeshAgent navComp;
+
+    GameObject waveManager;
 
     //shooting 
     public GameObject bullet;
@@ -30,6 +33,8 @@ public class Enemy : MonoBehaviour
         m_health = 10;
         m_damage = 10;
         player = GameObject.FindGameObjectWithTag("Player");
+        player2 = GameObject.FindGameObjectWithTag("Player2");
+        waveManager = GameObject.FindGameObjectWithTag("WaveManager");
 
         navComp = GetComponent<NavMeshAgent>();
         navComp.speed = movementSpeed;
@@ -52,21 +57,46 @@ public class Enemy : MonoBehaviour
 
     void moveToPlayer()
     {
-        navComp.SetDestination(player.transform.position);
+        Vector3 playerPos = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + 1.0f);
+        navComp.SetDestination(playerPos);
+
+        float distance = Vector3.Distance(transform.position, playerPos);
+
+        if (distance <= 2.0f && !player.GetComponent<Player>().m_Invincible)
+        {
+            player.GetComponent<Player>().TakeDamage(1);
+            player2.GetComponent<Player>().TakeDamage(1);
+        }
+
+        int randomNum = Random.Range(0, 3);
 
         Vector3 direction = (player.transform.position - transform.position).normalized;
+
+        if (randomNum == 0)
+            direction = (player.transform.position - transform.position).normalized;
+
+        if(randomNum == 1)
+            direction = (player2.transform.position - transform.position).normalized;
+
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 2.0f);
 
         if(transform.position.z <= player.transform.position.z)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y, player.transform.position.z + 20);
+            transform.position = new Vector3(transform.position.x, transform.position.y, waveManager.transform.position.z);
         }
     }
 
     void OnTriggerEnter(Collider collider)
     {
         if(collider.tag == "PlayerBullet")
+        {
+            TakeDamage(5);
+
+            GameObject explosion = (GameObject)Instantiate(gotHitExplosion, transform.position, gotHitExplosion.transform.rotation);
+            Destroy(explosion, explosion.GetComponent<ParticleSystem>().duration);
+        }
+        if (collider.tag == "Player2Bullet")
         {
             TakeDamage(5);
 

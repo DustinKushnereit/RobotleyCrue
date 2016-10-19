@@ -25,7 +25,7 @@ public class WaveManager : MonoBehaviour
     public List<GameObject> bossTypes;
     bool spawnOnce = true;
 
-    public float spawnRadius = 15.0f;
+    public float spawnRadius = 5.0f;
 
     private int incrementer = 0;
 
@@ -42,8 +42,8 @@ public class WaveManager : MonoBehaviour
 
     void Start()
     {
-        spawnPosition = transform.position;
-        
+        spawnPosition = new Vector3(Random.insideUnitCircle.x, spawnPosition.y, Random.insideUnitCircle.y).normalized * spawnRadius;
+
         totalEnemies = 0;
         enemiesKilled = 0;
         Invoke("StartWave", waveSpawnDelay);
@@ -53,7 +53,7 @@ public class WaveManager : MonoBehaviour
 
     void Update()
     {
-        spawnPosition = new Vector3(transform.position.x, transform.position.y, player.transform.position.z + 20);
+        spawnPosition = new Vector3(Random.insideUnitCircle.x, spawnPosition.y, Random.insideUnitCircle.y).normalized * spawnRadius;
 
         if (player.transform.position.z <= 80)
         {
@@ -178,7 +178,7 @@ public class WaveManager : MonoBehaviour
     {
         if (!waveEnd)
         {
-            spawnPosition = new Vector3(Random.insideUnitCircle.x * 5, spawnPosition.y, spawnPosition.z);
+            spawnPosition = new Vector3(Random.insideUnitCircle.x, spawnPosition.y, Random.insideUnitCircle.y).normalized * spawnRadius;
 
             if (incrementer % 3 == 0)
                 Instantiate(enemyTypes[1], spawnPosition, enemyTypes[1].transform.rotation);
