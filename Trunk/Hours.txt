@@ -42,3 +42,10 @@
 	1 hours
 	fixed menu
 	fixed enemies getting behind player
+	
+10/19
+	3 hours - Dustin
+	Added player2
+	Minor Kinect adjustments
+	Broken Guitar debugging
+	
