@@ -57,7 +57,7 @@ public class Enemy : MonoBehaviour
 
     void moveToPlayer()
     {
-        Vector3 playerPos = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + 1.0f);
+        Vector3 playerPos = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + 2.0f);
         navComp.SetDestination(playerPos);
 
         float distance = Vector3.Distance(transform.position, playerPos);

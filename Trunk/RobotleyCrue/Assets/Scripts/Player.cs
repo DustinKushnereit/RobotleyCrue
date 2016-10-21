@@ -89,6 +89,8 @@ public class Player : MonoBehaviour
 
     bool initialDisableBool = true;
 
+    public GameObject theCylinder;
+
     void Start ()
     {
         m_health = healthSlider.value = 20;
@@ -100,7 +102,7 @@ public class Player : MonoBehaviour
         if(!isPlayer2)
             gamePad = GamepadManager.Instance.GetGamepad(1);
         else
-            gamePad = GamepadManager.Instance.GetGamepad(1);
+            gamePad = GamepadManager.Instance.GetGamepad(2);
 
         canMove = true;
         canAttack = true;
@@ -139,8 +141,8 @@ public class Player : MonoBehaviour
     {
         if (!inMenu)
         {
-            //if(initialDisableBool)
-                //initialDisable();
+            if(initialDisableBool)
+                initialDisable();
 
             checkWinLoss();
 
@@ -201,13 +203,13 @@ public class Player : MonoBehaviour
 
         if (!isPlayer2)
         {
-            if (playerLeftArm.transform.eulerAngles.z <= 95)
-                playerLeftArm.transform.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, 95);
+            if (playerLeftArm.transform.eulerAngles.z <= 65)
+                playerLeftArm.transform.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, 65);
         }
         else
         {
-            if (playerLeftArm.transform.eulerAngles.z <= 95)
-                playerLeftArm.transform.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, 95);
+            if (playerLeftArm.transform.eulerAngles.z <= 65)
+                playerLeftArm.transform.eulerAngles = new Vector3(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, 65);
         }
     }
 
@@ -322,6 +324,9 @@ public class Player : MonoBehaviour
             ammoCount--;
             GameObject bulletInstance = Instantiate(bullet, new Vector3(playerLeftArm.transform.position.x - 0.1f, playerLeftArm.transform.position.y - 0.1f, playerLeftArm.transform.position.z - 0.1f), playerLeftArm.transform.rotation) as GameObject;
             bulletInstance.GetComponent<Rigidbody>().AddForce(playerLeftArm.transform.up * 38, ForceMode.VelocityChange);
+
+            //GameObject bulletInstance = Instantiate(bullet, new Vector3(guitarTip.transform.position.x, guitarTip.transform.position.y, guitarTip.transform.position.z - 0.1f), guitarTip.transform.rotation) as GameObject;
+            //bulletInstance.GetComponent<Rigidbody>().AddForce(playerLeftArm.transform.up * 38, ForceMode.VelocityChange);
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -412,9 +417,11 @@ public class Player : MonoBehaviour
         if ((gamePad.GetButton("DPad_Up") || gamePad.GetButton("DPad_Down")) && fireOnce) //The flipper is DPad_up and DPad_Down
         {
             fireOnce = false;
-
             GameObject bulletInstance = Instantiate(bullet, new Vector3(playerLeftArm.transform.position.x - 0.1f, playerLeftArm.transform.position.y - 0.1f, playerLeftArm.transform.position.z - 0.1f), playerLeftArm.transform.rotation) as GameObject;
             bulletInstance.GetComponent<Rigidbody>().AddForce(playerLeftArm.transform.up * 38, ForceMode.VelocityChange);
+
+            //GameObject bulletInstance = Instantiate(bullet, new Vector3(guitarTip.transform.position.x, guitarTip.transform.position.y, guitarTip.transform.position.z - 0.1f), guitarTip.transform.rotation) as GameObject;
+            //bulletInstance.GetComponent<Rigidbody>().AddForce(playerLeftArm.transform.up * 38, ForceMode.VelocityChange);
         }
 
         if (Input.GetKeyDown(KeyCode.R))

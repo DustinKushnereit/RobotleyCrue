@@ -11,6 +11,7 @@ public class MainMenu : MonoBehaviour
     //public GameObject kinectManager;
     public GameObject mainCamera;
     public GameObject playerHealthBar;
+    public GameObject player2HealthBar;
     public GameObject canvasMenu;
     public GameObject menuGameObjects;
     public Text p1M16;
@@ -116,6 +117,7 @@ public class MainMenu : MonoBehaviour
             mainCamera.SetActive(true);
             mainCamera.GetComponent<CameraFollowPlayer>().inMenu = false;
             playerHealthBar.SetActive(true);
+            player2HealthBar.SetActive(true);
             canvasMenu.SetActive(false);
             menuGameObjects.SetActive(false);
         }
