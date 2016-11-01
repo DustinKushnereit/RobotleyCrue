@@ -8,41 +8,58 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     public GameObject waveManager;
-    //public GameObject kinectManager;
+    public GameObject kinectManager;
     public GameObject mainCamera;
     public GameObject playerHealthBar;
     public GameObject player2HealthBar;
     public GameObject canvasMenu;
     public GameObject menuGameObjects;
+
+    public GameObject guitarAudio;
+    public GameObject guitarAudio2;
+    public GameObject bassAudio;
+    public GameObject bassAudio2;
+
     public Text p1M16;
     public Text p2M16;
     public Text p1Shotgun;
     public Text p2Shotgun;
-    public GameObject m16GO;
-    public GameObject shotgunGO;
-    public GameObject continueGO;
+    //public GameObject m16GO;
+    //public GameObject shotgunGO;
+    //public GameObject continueGO;
     public GameObject metalFloor;
     public GameObject pillar9;
     public GameObject pillar5;
+    public GameObject fauxSun;
 
     GameObject player1;
     GameObject player2;
 
-    bool player1CanContinue;
-    bool player2CanContinue;
-
     void Start ()
     {
-        player1CanContinue = false;
-        player2CanContinue = false;
     }
 	
 	void Update ()
     {
+        checkControllerMode();
         checkPlayer1();
         checkPlayer2();
         checkContinue();
 	}
+
+    void checkControllerMode()
+    {
+        player1 = GameObject.FindGameObjectWithTag("Player");
+
+        if(player1.GetComponent<Player>().kinectMode)
+        {
+            kinectManager.SetActive(true);
+        }
+        else if(!player1.GetComponent<Player>().kinectMode)
+        {
+            kinectManager.SetActive(false);
+        }
+    }
 
     void checkPlayer1()
     {
@@ -50,7 +67,6 @@ public class MainMenu : MonoBehaviour
 
         if (player1.GetComponent<Player>().m16)
         {
-            player1CanContinue = true;
             player1.GetComponent<Player>().shotgun = false;
 
             if (p1M16 != null)
@@ -62,7 +78,6 @@ public class MainMenu : MonoBehaviour
 
         if (player1.GetComponent<Player>().shotgun)
         {
-            player1CanContinue = true;
             player1.GetComponent<Player>().m16 = false;
 
             if (p1Shotgun != null)
@@ -79,7 +94,6 @@ public class MainMenu : MonoBehaviour
 
         if (player2.GetComponent<Player>().m16)
         {
-            player2CanContinue = true;
             player2.GetComponent<Player>().shotgun = false;
 
             if (p2M16 != null)
@@ -91,7 +105,6 @@ public class MainMenu : MonoBehaviour
 
         if (player2.GetComponent<Player>().shotgun)
         {
-            player2CanContinue = true;
             player2.GetComponent<Player>().m16 = false;
 
             if (p2Shotgun != null)
@@ -106,12 +119,21 @@ public class MainMenu : MonoBehaviour
     {
         if(player1.GetComponent<Player>().Continue)// && player2CanContinue && player2.GetComponent<Player>().Continue)
         {
+            guitarAudio.GetComponent<AudioSource>().enabled = true;
+            bassAudio.GetComponent<AudioSource>().enabled = true;
+            guitarAudio2.GetComponent<AudioSource>().enabled = true;
+            bassAudio2.GetComponent<AudioSource>().enabled = true;
+
             player1.GetComponent<Player>().inMenu = false;
             player2.GetComponent<Player>().inMenu = false;
+
+            player1.GetComponent<Player>().setDefaultVolume();
+            player2.GetComponent<Player>().setDefaultVolume();
 
             metalFloor.SetActive(true);
             pillar9.SetActive(true);
             pillar5.SetActive(true);
+            fauxSun.SetActive(true);
             waveManager.SetActive(true);
             //kinectManager.SetActive(true);
             mainCamera.SetActive(true);
@@ -120,6 +142,9 @@ public class MainMenu : MonoBehaviour
             player2HealthBar.SetActive(true);
             canvasMenu.SetActive(false);
             menuGameObjects.SetActive(false);
+
+            GameObject.FindGameObjectWithTag("CameraPlayer1").GetComponent<AudioSource>().enabled = true;
+            GameObject.FindGameObjectWithTag("CameraPlayer1").GetComponent<MusicScript>().enabled = true;
         }
     }
 }

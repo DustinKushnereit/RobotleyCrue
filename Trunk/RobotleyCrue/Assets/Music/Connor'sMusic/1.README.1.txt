@@ -1,0 +1,26 @@
+Sound File Key:
+
+GuitarShot___	-	SFX for the "Rifle" Guitar
+BassShot_____	-	SFX for the "Shotgun" Guitar
+
+	For both of the above, the ____ corresponds to the note/chord being played.
+	This won't necessarily be relevant yet, but it will in the future.
+
+M-A-F Blasters (_______ - Main BGM)	-	This is the main BGM, use this for the music.
+M-A-F Blasters (_______ - Guitar)	-	This is the Guitar SFX arranged in song form, explanation below.
+M-A-F Blasters (_______ - Bass)		-	This is the Bass SFX arranged in song form, explanation below.
+
+
+--Guitar/Bass SFX Explanation--
+
+So I composed the song in such a way that it only ever uses the three chords I provided the SFX for - F, C#, and D#.
+
+However, as music is, you can't just throw any of those chords in anywhere, or else it sounds bad. As such, I see two solutions:
+	1. Use the individual sound effects, using code to make sure the correct "note" is being used at all times
+	2. Use the SFX backing tracks, using code to turn the tracks on when the player is firing / off when the player is not firing
+
+I suspect the latter will be the easier of the two options, but I also imagine it could lead to problems down the line, so depending on how well it works, we may want to try the former option, or come up with some other method all together.
+
+Although, as far as this week is concerned, you can just stick to using only the SFX files in "F" if you want.
+
+It won't always sound good, but the majority of the song is in F, so it should be fine.

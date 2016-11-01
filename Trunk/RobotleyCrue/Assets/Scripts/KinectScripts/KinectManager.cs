@@ -15,6 +15,9 @@ public class KinectManager : MonoBehaviour
     public GameObject player;
     public GameObject player2;
 
+    public GameObject playerCamera;
+    public GameObject player2Camera;
+
     // Public Bool to determine how many players there are. Default of one user.
     public bool TwoUsers = false;
 	
@@ -1003,8 +1006,8 @@ public class KinectManager : MonoBehaviour
 		catch(DllNotFoundException e)
 		{
 			string message = "Please check the Kinect SDK installation.";
-			Debug.LogError(message);
-			Debug.LogError(e.ToString());
+			//Debug.LogError(message);
+			//Debug.LogError(e.ToString());
 			if(CalibrationText != null)
 				CalibrationText.GetComponent<GUIText>().text = message;
 				
@@ -1013,8 +1016,8 @@ public class KinectManager : MonoBehaviour
 		catch (Exception e)
 		{
 			string message = e.Message + " - " + KinectWrapper.GetNuiErrorString(hr);
-			Debug.LogError(message);
-			Debug.LogError(e.ToString());
+			//Debug.LogError(message);
+			//Debug.LogError(e.ToString());
 			if(CalibrationText != null)
 				CalibrationText.GetComponent<GUIText>().text = message;
 				
@@ -1190,19 +1193,19 @@ public class KinectManager : MonoBehaviour
 									
 									if(HandCursor1.GetComponent<GUITexture>() == null)
 									{
-										float zDist = HandCursor1.transform.position.z - player.GetComponent<Camera>().transform.position.z;
+										float zDist = HandCursor1.transform.position.z - playerCamera.GetComponent<Camera>().transform.position.z;
 										vCursorPos.z = zDist;
 										
-										vCursorPos = player.GetComponent<Camera>().ViewportToWorldPoint(vCursorPos);
+										vCursorPos = playerCamera.GetComponent<Camera>().ViewportToWorldPoint(vCursorPos);
 									}
 
-									HandCursor1.transform.position = Vector3.Lerp(HandCursor1.transform.position, vCursorPos, 1 * Time.deltaTime);
+									HandCursor1.transform.position = Vector3.Lerp(HandCursor1.transform.position, vCursorPos, 0.8f * Time.deltaTime);
 								}
 								
 								if(ControlMouseCursor)
 								{
 									Vector3 vCursorPos = HandCursor1.GetComponent<GUITexture>() != null ? HandCursor1.transform.position :
-                                        player.GetComponent<Camera>().WorldToViewportPoint(HandCursor1.transform.position);
+                                        playerCamera.GetComponent<Camera>().WorldToViewportPoint(HandCursor1.transform.position);
 									MouseControl.MouseMove(vCursorPos, CalibrationText);
 								}
 							}
@@ -1275,19 +1278,19 @@ public class KinectManager : MonoBehaviour
 									
 									if(HandCursor2.GetComponent<GUITexture>() == null)
 									{
-										float zDist = HandCursor2.transform.position.z - player2.GetComponent<Camera>().transform.position.z;
+										float zDist = HandCursor2.transform.position.z - playerCamera.GetComponent<Camera>().transform.position.z;
 										vCursorPos.z = zDist;
 										
-										vCursorPos = player2.GetComponent<Camera>().ViewportToWorldPoint(vCursorPos);
+										vCursorPos = playerCamera.GetComponent<Camera>().ViewportToWorldPoint(vCursorPos);
 									}
 									
-									HandCursor2.transform.position = Vector3.Lerp(HandCursor2.transform.position, vCursorPos, 1 * Time.deltaTime);
+									HandCursor2.transform.position = Vector3.Lerp(HandCursor2.transform.position, vCursorPos, 0.8f * Time.deltaTime);
 								}
 								
 								if(ControlMouseCursor)
 								{
 									Vector3 vCursorPos = HandCursor2.GetComponent<GUITexture>() != null ? HandCursor2.transform.position :
-                                        player2.GetComponent<Camera>().WorldToViewportPoint(HandCursor2.transform.position);
+                                        playerCamera.GetComponent<Camera>().WorldToViewportPoint(HandCursor2.transform.position);
 									MouseControl.MouseMove(vCursorPos, CalibrationText);
 								}
 							}

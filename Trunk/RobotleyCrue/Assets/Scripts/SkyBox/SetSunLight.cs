@@ -9,7 +9,7 @@ public class SetSunLight : MonoBehaviour
 	public Renderer water;
 	public Transform stars;
 	public Transform worldProbe;
-    public GameObject player;
+    public GameObject playerCamera;
     
 	void Start () 
 	{
@@ -24,7 +24,7 @@ public class SetSunLight : MonoBehaviour
 		lightwall.material.SetColor("_EmissionColor", final);
 		DynamicGI.SetEmissive(lightwall, final);
 	
-		Vector3 tvec = player.GetComponent<Camera>().transform.position;
+		Vector3 tvec = playerCamera.transform.position;
 		worldProbe.transform.position = tvec;
 
 		water.material.mainTextureOffset = new Vector2(Time.time / 100, 0);

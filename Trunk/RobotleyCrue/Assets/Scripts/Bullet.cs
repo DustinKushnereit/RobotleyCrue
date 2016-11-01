@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.tag.Equals("M16") && this.tag.Equals("PlayerBullet"))
+        /*if (collider.gameObject.tag.Equals("M16") && this.tag.Equals("PlayerBullet"))
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             player.GetComponent<Player>().m16 = true;
@@ -61,7 +61,7 @@ public class Bullet : MonoBehaviour
             GameObject explosion = (GameObject)Instantiate(particleSystemExplosion, transform.position, particleSystemExplosion.transform.rotation);
             Destroy(explosion, explosion.GetComponent<ParticleSystem>().duration);
             Destroy(this.gameObject);
-        }
+        }*/
 
         if (collider.gameObject.tag.Equals("Continue"))
         {
@@ -87,6 +87,28 @@ public class Bullet : MonoBehaviour
             GameObject explosion = (GameObject)Instantiate(particleSystemExplosion, transform.position, particleSystemExplosion.transform.rotation);
             Destroy(explosion, explosion.GetComponent<ParticleSystem>().duration);
             Destroy(this.gameObject);
+        }
+
+        if (collider.gameObject.tag.Equals("EnemyBullet"))
+        {
+            GameObject explosion = (GameObject)Instantiate(particleSystemExplosion, transform.position, particleSystemExplosion.transform.rotation);
+            Destroy(explosion, explosion.GetComponent<ParticleSystem>().duration);
+            Destroy(this.gameObject);
+            Destroy(collider.gameObject);
+        }
+
+        if (collider.gameObject.tag.Equals("HealthPickUp"))
+        {
+            GameObject explosion = (GameObject)Instantiate(particleSystemExplosion, transform.position, particleSystemExplosion.transform.rotation);
+            Destroy(explosion, explosion.GetComponent<ParticleSystem>().duration);
+            Destroy(this.gameObject);
+            Destroy(collider.gameObject);
+
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.GetComponent<Player>().TakeDamage(-2);
+
+            GameObject player2 = GameObject.FindGameObjectWithTag("Player2");
+            player2.GetComponent<Player>().TakeDamage(-2);
         }
     }
 }
