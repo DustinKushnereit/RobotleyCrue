@@ -1,0 +1,2 @@
+make shot gun
+Make thrusters for enemies
