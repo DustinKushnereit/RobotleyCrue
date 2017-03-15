@@ -1,0 +1,84 @@
+Initialize engine version: 5.4.2f1 (94e3a60ee258)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 980 (ID=0x13c0)
+    Vendor:   NVIDIA
+    VRAM:     4060 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Dustin\Documents\Programing Related\Senior Capstone Repo\builds\RobotleyCrue4.1.0\RobotleyCrue4.1.0_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Dustin\Documents\Programing Related\Senior Capstone Repo\builds\RobotleyCrue4.1.0\RobotleyCrue4.1.0_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Dustin\Documents\Programing Related\Senior Capstone Repo\builds\RobotleyCrue4.1.0\RobotleyCrue4.1.0_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Dustin\Documents\Programing Related\Senior Capstone Repo\builds\RobotleyCrue4.1.0\RobotleyCrue4.1.0_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Dustin\Documents\Programing Related\Senior Capstone Repo\builds\RobotleyCrue4.1.0\RobotleyCrue4.1.0_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Dustin\Documents\Programing Related\Senior Capstone Repo\builds\RobotleyCrue4.1.0\RobotleyCrue4.1.0_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Dustin\Documents\Programing Related\Senior Capstone Repo\builds\RobotleyCrue4.1.0\RobotleyCrue4.1.0_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Dustin\Documents\Programing Related\Senior Capstone Repo\builds\RobotleyCrue4.1.0\RobotleyCrue4.1.0_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\Dustin\Documents\Programing Related\Senior Capstone Repo\builds\RobotleyCrue4.1.0\RobotleyCrue4.1.0_Data\Managed\XInputDotNetPure.dll (this message is harmless)
+Loading C:\Users\Dustin\Documents\Programing Related\Senior Capstone Repo\builds\RobotleyCrue4.1.0\RobotleyCrue4.1.0_Data\Managed\XInputDotNetPure.dll into Unity Child Domain
+Platform assembly: C:\Users\Dustin\Documents\Programing Related\Senior Capstone Repo\builds\RobotleyCrue4.1.0\RobotleyCrue4.1.0_Data\Managed\XInputDotNetPure.dll (this message is harmless)
+Loading C:\Users\Dustin\Documents\Programing Related\Senior Capstone Repo\builds\RobotleyCrue4.1.0\RobotleyCrue4.1.0_Data\Managed\XInputDotNetPure.dll into Unity Child Domain
+- Completed reload, in  0.049 seconds
+Platform assembly: C:\Users\Dustin\Documents\Programing Related\Senior Capstone Repo\builds\RobotleyCrue4.1.0\RobotleyCrue4.1.0_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Dustin\Documents\Programing Related\Senior Capstone Repo\builds\RobotleyCrue4.1.0\RobotleyCrue4.1.0_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 5547x1080 at -1920,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 1.500253 ms
+DontDestroyOnLoad only work for root GameObjects or components on root GameObjects.
+ 
+(Filename:  Line: 386)
+
+Can not play a disabled audio source
+ 
+(Filename:  Line: 432)
+
+Can not play a disabled audio source
+ 
+(Filename:  Line: 432)
+
+Can not play a disabled audio source
+ 
+(Filename:  Line: 432)
+
+Can not play a disabled audio source
+ 
+(Filename:  Line: 432)
+
+Can not play a disabled audio source
+ 
+(Filename:  Line: 432)
+
+An extension has been connected.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+Setting up 3 worker threads for Enlighten.
+  Thread -> id: c80 -> priority: 1 
+  Thread -> id: 1fd8 -> priority: 1 
+  Thread -> id: 10d0 -> priority: 1 
+An extension has been connected.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+Can not play a disabled audio source
+ 
+(Filename:  Line: 432)
+
+Can not play a disabled audio source
+ 
+(Filename:  Line: 432)
+
+Can not play a disabled audio source
+ 
+(Filename:  Line: 432)
+
+Can not play a disabled audio source
+ 
+(Filename:  Line: 432)
+
+Can not play a disabled audio source
+ 
+(Filename:  Line: 432)
+

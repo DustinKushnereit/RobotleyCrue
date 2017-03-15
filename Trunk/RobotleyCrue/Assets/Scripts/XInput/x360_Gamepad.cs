@@ -17,6 +17,7 @@
 using UnityEngine;
 using XInputDotNetPure;
 using System.Collections.Generic;
+using System.Collections;
 
 // Stores states of a single gamepad button
 public struct xButton
@@ -263,7 +264,8 @@ public class x360_Gamepad
 	}
 	
 	// Return button state
-	public bool GetButton(string button) {
+	public bool GetButton(string button)
+    {
 		return inputMap[button].state == ButtonState.Pressed ? true : false;
 	}
 	

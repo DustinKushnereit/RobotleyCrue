@@ -79,8 +79,9 @@ public class KinectGestures
 
 	
 	// Gesture related constants, variables and functions
+//changed this to wrist
 	private const int leftHandIndex = (int)KinectWrapper.NuiSkeletonPositionIndex.HandLeft;
-	private const int rightHandIndex = (int)KinectWrapper.NuiSkeletonPositionIndex.HandRight;
+	private const int rightHandIndex = (int)KinectWrapper.NuiSkeletonPositionIndex.WristRight;
 		
 	private const int leftElbowIndex = (int)KinectWrapper.NuiSkeletonPositionIndex.ElbowLeft;
 	private const int rightElbowIndex = (int)KinectWrapper.NuiSkeletonPositionIndex.ElbowRight;

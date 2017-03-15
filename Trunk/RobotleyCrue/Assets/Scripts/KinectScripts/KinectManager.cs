@@ -13,12 +13,16 @@ public class KinectManager : MonoBehaviour
 	public enum Smoothing : int { None, Default, Medium, Aggressive }
 
     public GameObject player;
-	
-	// Public Bool to determine how many players there are. Default of one user.
-	public bool TwoUsers = false;
+    public GameObject player2;
+
+    public GameObject playerCamera;
+    public GameObject player2Camera;
+
+    // Public Bool to determine how many players there are. Default of one user.
+    public bool TwoUsers = false;
 	
 //	// Public Bool to determine if the sensor is used in near mode.
-//	public bool NearMode = false;
+    public bool NearMode = true;
 
 	// Public Bool to determine whether to receive and compute the user map
 	public bool ComputeUserMap = false;
@@ -37,7 +41,7 @@ public class KinectManager : MonoBehaviour
 	
 	// Public Float to specify the image width used by depth and color maps, as % of the camera width. the height is calculated depending on the width.
 	// if percent is zero, it is calculated internally to match the selected width and height of the depth image
-	public float DisplayMapsWidthPercent = 20f;
+	public float DisplayMapsWidthPercent = 0.0f;//20 80
 
 	// How high off the ground is the sensor (in meters).
 	public float SensorHeight = 1.0f;
@@ -46,10 +50,10 @@ public class KinectManager : MonoBehaviour
 	public int SensorAngle = 0;
 	
 	// Minimum user distance in order to process skeleton data
-	public float MinUserDistance = 1.0f;
+	public float MinUserDistance = 0.0f;
 	
 	// Maximum user distance, if any. 0 means no max-distance limitation
-	public float MaxUserDistance = 0f;
+	public float MaxUserDistance = 8.0f;
 	
 	// Public Bool to determine whether to detect only the closest user or not
 	public bool DetectClosestUser = true;
@@ -79,7 +83,7 @@ public class KinectManager : MonoBehaviour
 	public List<KinectGestures.Gestures> Player2Gestures;
 	
 	// Minimum time between gesture detections
-	public float MinTimeBetweenGestures = 0.7f;
+	public float MinTimeBetweenGestures = 0.5f;
 	
 	// List of Gesture Listeners. They must implement KinectGestures.GestureListenerInterface
 	public List<MonoBehaviour> GestureListeners;
@@ -1002,8 +1006,8 @@ public class KinectManager : MonoBehaviour
 		catch(DllNotFoundException e)
 		{
 			string message = "Please check the Kinect SDK installation.";
-			Debug.LogError(message);
-			Debug.LogError(e.ToString());
+			//Debug.LogError(message);
+			//Debug.LogError(e.ToString());
 			if(CalibrationText != null)
 				CalibrationText.GetComponent<GUIText>().text = message;
 				
@@ -1012,8 +1016,8 @@ public class KinectManager : MonoBehaviour
 		catch (Exception e)
 		{
 			string message = e.Message + " - " + KinectWrapper.GetNuiErrorString(hr);
-			Debug.LogError(message);
-			Debug.LogError(e.ToString());
+			//Debug.LogError(message);
+			//Debug.LogError(e.ToString());
 			if(CalibrationText != null)
 				CalibrationText.GetComponent<GUIText>().text = message;
 				
@@ -1152,7 +1156,7 @@ public class KinectManager : MonoBehaviour
 							if(ControlMouseCursor)
 							{
 								MouseControl.MouseClick();
-							}
+                            }
 						}
 						
 						foreach(KinectGestures.GestureListenerInterface listener in gestureListeners)
@@ -1189,19 +1193,19 @@ public class KinectManager : MonoBehaviour
 									
 									if(HandCursor1.GetComponent<GUITexture>() == null)
 									{
-										float zDist = HandCursor1.transform.position.z - player.GetComponent<Camera>().transform.position.z;
+										float zDist = HandCursor1.transform.position.z - playerCamera.GetComponent<Camera>().transform.position.z;
 										vCursorPos.z = zDist;
 										
-										vCursorPos = player.GetComponent<Camera>().ViewportToWorldPoint(vCursorPos);
+										vCursorPos = playerCamera.GetComponent<Camera>().ViewportToWorldPoint(vCursorPos);
 									}
 
-									HandCursor1.transform.position = Vector3.Lerp(HandCursor1.transform.position, vCursorPos, 2 * Time.deltaTime);
+									HandCursor1.transform.position = Vector3.Lerp(HandCursor1.transform.position, vCursorPos, 0.4f * Time.deltaTime);
 								}
 								
 								if(ControlMouseCursor)
 								{
 									Vector3 vCursorPos = HandCursor1.GetComponent<GUITexture>() != null ? HandCursor1.transform.position :
-                                        player.GetComponent<Camera>().WorldToViewportPoint(HandCursor1.transform.position);
+                                        playerCamera.GetComponent<Camera>().WorldToViewportPoint(HandCursor1.transform.position);
 									MouseControl.MouseMove(vCursorPos, CalibrationText);
 								}
 							}
@@ -1274,19 +1278,19 @@ public class KinectManager : MonoBehaviour
 									
 									if(HandCursor2.GetComponent<GUITexture>() == null)
 									{
-										float zDist = HandCursor2.transform.position.z - Camera.main.transform.position.z;
+										float zDist = HandCursor2.transform.position.z - playerCamera.GetComponent<Camera>().transform.position.z;
 										vCursorPos.z = zDist;
 										
-										vCursorPos = Camera.main.ViewportToWorldPoint(vCursorPos);
+										vCursorPos = playerCamera.GetComponent<Camera>().ViewportToWorldPoint(vCursorPos);
 									}
 									
-									HandCursor2.transform.position = Vector3.Lerp(HandCursor2.transform.position, vCursorPos, 3 * Time.deltaTime);
+									HandCursor2.transform.position = Vector3.Lerp(HandCursor2.transform.position, vCursorPos, 0.4f * Time.deltaTime);
 								}
 								
 								if(ControlMouseCursor)
 								{
 									Vector3 vCursorPos = HandCursor2.GetComponent<GUITexture>() != null ? HandCursor2.transform.position :
-										Camera.main.WorldToViewportPoint(HandCursor2.transform.position);
+                                        playerCamera.GetComponent<Camera>().WorldToViewportPoint(HandCursor2.transform.position);
 									MouseControl.MouseMove(vCursorPos, CalibrationText);
 								}
 							}

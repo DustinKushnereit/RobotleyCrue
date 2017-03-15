@@ -1,0 +1,163 @@
+fileFormatVersion: 2
+guid: 9fb17981235f24a4c9e51ea8638a0fb1
+timeCreated: 1477969960
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: guitar1
+    100002: guitar:pCylinder1
+    100004: guitar:pCylinder10
+    100006: guitar:pCylinder11
+    100008: guitar:pCylinder20
+    100010: guitar:pCylinder21
+    100012: guitar:pCylinder22
+    100014: guitar:pCylinder23
+    100016: guitar:pCylinder24
+    100018: guitar:pCylinder35
+    100020: guitar:pCylinder40
+    100022: guitar:pCylinder41
+    100024: guitar:pCylinder42
+    100026: guitar:pCylinder43
+    100028: guitar:pCylinder7
+    100030: guitar:pCylinder8
+    100032: guitar:pCylinder9
+    100034: guitar:transform1
+    100036: guitar:transform10
+    100038: guitar:transform11
+    100040: guitar:transform12
+    100042: guitar:transform13
+    100044: guitar:transform14
+    100046: guitar:transform15
+    100048: guitar:transform16
+    100050: guitar:transform17
+    100052: guitar:transform18
+    100054: guitar:transform19
+    100056: guitar:transform2
+    100058: guitar:transform20
+    100060: guitar:transform21
+    100062: guitar:transform3
+    100064: guitar:transform4
+    100066: guitar:transform5
+    100068: guitar:transform6
+    100070: guitar:transform7
+    100072: guitar:transform8
+    100074: guitar:transform9
+    100076: //RootNode
+    100078: pCylinder35
+    100080: pCylinder36
+    100082: pCylinder37
+    100084: pCylinder38
+    100086: pCylinder39
+    400000: guitar1
+    400002: guitar:pCylinder1
+    400004: guitar:pCylinder10
+    400006: guitar:pCylinder11
+    400008: guitar:pCylinder20
+    400010: guitar:pCylinder21
+    400012: guitar:pCylinder22
+    400014: guitar:pCylinder23
+    400016: guitar:pCylinder24
+    400018: guitar:pCylinder35
+    400020: guitar:pCylinder40
+    400022: guitar:pCylinder41
+    400024: guitar:pCylinder42
+    400026: guitar:pCylinder43
+    400028: guitar:pCylinder7
+    400030: guitar:pCylinder8
+    400032: guitar:pCylinder9
+    400034: guitar:transform1
+    400036: guitar:transform10
+    400038: guitar:transform11
+    400040: guitar:transform12
+    400042: guitar:transform13
+    400044: guitar:transform14
+    400046: guitar:transform15
+    400048: guitar:transform16
+    400050: guitar:transform17
+    400052: guitar:transform18
+    400054: guitar:transform19
+    400056: guitar:transform2
+    400058: guitar:transform20
+    400060: guitar:transform21
+    400062: guitar:transform3
+    400064: guitar:transform4
+    400066: guitar:transform5
+    400068: guitar:transform6
+    400070: guitar:transform7
+    400072: guitar:transform8
+    400074: guitar:transform9
+    400076: //RootNode
+    400078: pCylinder35
+    400080: pCylinder36
+    400082: pCylinder37
+    400084: pCylinder38
+    400086: pCylinder39
+    2300000: guitar:pCylinder43
+    3300000: guitar:pCylinder43
+    4300000: guitar:pCylinder43
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
